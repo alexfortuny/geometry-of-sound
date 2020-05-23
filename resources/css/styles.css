@@ -13,7 +13,7 @@ h1 {
   border-radius: 50%;
   left:10%;
   top:10%;
-  z-index: 2;
+  z-index: 1;
 }
 canvas {
   position:fixed;
@@ -21,7 +21,7 @@ canvas {
   height:600px;
   left:10%;
   top:10%;
-  z-index: 4;
+  z-index: 3;
 }
 .point {
   position: absolute;
@@ -29,10 +29,7 @@ canvas {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  z-index: 3;
-}
-.point:hover {
-  background-color: rgb(61, 143, 136);
+  z-index: 2;
 }
 .center {
   position:absolute;
@@ -89,4 +86,24 @@ canvas {
 .point:nth-child(12) {
   position: absolute;
   transform: rotate(330deg) translateY(-300px);
+}
+#solve_button {
+    position: relative;
+    width: 20%;
+    height: 50px;
+    background: rgba(44, 62, 80, 1);
+    margin: 0 auto;
+    font-family: sans-serif;
+    font-size: 24px;
+    color: #95a5a6;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 4px;
+    box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.3);
+    bottom: -700px;
+}
+
+#solve_button:hover {
+    background: rgba(44, 62, 80, 0.4);
+    cursor: pointer;
 }
