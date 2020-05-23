@@ -1,39 +1,71 @@
-var clicks = 0;
-var lastClick = [0, 0];
+var data = {
+    canvas: null,
+    ctx: null,
+    clickedDot: null,
+    dots: [{x: 100, y: 100}, {x: 200, y: 200}, {x: 200, y: 100}, {x: 100, y: 200}]
+};
 
-document.getElementById('canvas').addEventListener('click', drawLine, false);
+function circleCollision (c1, c2) {
+    var a = c1.r + c2.r,
+        x = c1.x - c2.x,
+        y = c1.y - c2.y;
 
-function getCursorPosition(e) {
-    var x;
-    var y;
-
-    if (e.pageX != undefined && e.pageY != undefined) {
-        x = e.pageX;
-        y = e.pageY;
-    } else {
-        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-    }
-
-    return [x, y];
+    if ( a > Math.sqrt( (x*x) + (y*y) ) ) return true;
+    else return false;
 }
 
-function drawLine(e) {
-    context = this.getContext('2d');
+function prepCanvas () {
+    var res = window.devicePixelRatio || 1,
+        scale = 1 / res;
+    data.canvas = document.getElementById('canvas');
+    data.ctx = data.canvas.getContext('2d');
 
-    x = getCursorPosition(e)[0] - this.offsetLeft;
-    y = getCursorPosition(e)[1] - this.offsetTop;
+    data.canvas.width = window.innerWidth * res;
+    data.canvas.height = window.innerHeight * res;
+    data.canvas.style.width = window.innerWidth + 'px';
+    data.canvas.style.height = window.innerHeight + 'px';
 
-    if (clicks != 1) {
-        clicks++;
-    } else {
-        context.beginPath();
-        context.moveTo(lastClick[0], lastClick[1]);
-        context.lineTo(x, y, 6);
-        context.strokeStyle = '#000000';
-        context.stroke();
-        clicks = 0;
+    data.ctx.scale(res, res);
+
+    data.canvas.addEventListener('mousedown', function (e) {
+        checkForDot(e);
+    });
+}
+
+function drawDots () {
+    var i = 0;
+    for (; i < data.dots.length; i++) {
+        var d = data.dots[i];
+        data.ctx.beginPath();
+        data.ctx.arc(d.x, d.y, 10, 0, 2*Math.PI);
+        data.ctx.fillStyle = '#777';
+        data.ctx.fill();
+        data.ctx.closePath();
     }
+}
+function drawLine (toDot) {
+    data.ctx.beginPath();
+    data.ctx.moveTo(data.clickedDot.x, data.clickedDot.y);
+    data.ctx.lineTo(toDot.x, toDot.y);
+    data.ctx.lineWidth = 5;
+    data.ctx.strokeStyle = '#777';
+    data.ctx.stroke();
+    data.ctx.closePath();
+}
 
-    lastClick = [x, y];
-};
+function checkForDot (e) {
+    var i = 0, col = null;
+    for (; i < data.dots.length; i++) {
+        var d = data.dots[i],
+            c1 = {x: d.x, y: d.y, r: 10},
+            c2 = {x: e.pageX, y: e.pageY, r: 10};
+        if (circleCollision(c1, c2)) col = d;
+    }
+    if (col !== null) {
+        if (data.clickedDot !== null) drawLine(col);
+        data.clickedDot = col;
+    } else data.clickedDot = null;
+}
+
+prepCanvas();
+drawDots();
