@@ -13,5 +13,60 @@ h1 {
 #point1 {
   position: relative;
   top: 30px;
+  left: 100px;
+}
+#point2 {
+  position: relative;
+  top: 40px;
+  left: 110px;
+}
+#point3 {
+  position: relative;
+  top: 50px;
+  left: 120px;
+}
+#point4 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point5 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point6 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point7 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point8 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point9 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point10 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point11 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
+#point12 {
+  position: relative;
+  top: 30px;
   left: 30px;
 }
