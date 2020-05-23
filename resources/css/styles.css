@@ -3,8 +3,9 @@ h1 {
 }
 #circle {
   background-color:rgb(213, 225, 224);
-  width:1000px;
-  height:1000px;
+  width:500px;
+  height:500px;
+  border-radius: 50%;
 }
 .point {
   background-color: black;
