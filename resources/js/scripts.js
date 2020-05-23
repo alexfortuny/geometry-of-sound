@@ -1,47 +1,10 @@
-var mousePressed = false;
-/*
-var lastX, lastY;
-var ctx;
+function draw() {
+  var canvas = document.getElementById('circleCanvas');
+  if (canvas.getContext) {
+    var ctx = canvas.getContext('2d');
 
-function InitThis() {
-    ctx = document.getElementById('circleCanvas').getContext("2d");
-
-    $('.circleCanvas').mousedown(function (e) {
-        mousePressed = true;
-        Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
-    });
-
-    $('.circleCanvas').mousemove(function (e) {
-        if (mousePressed) {
-            Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
-        }
-    });
-
-    $('.circleCanvas').mouseup(function (e) {
-        mousePressed = false;
-    });
-	    $('.circleCanvas').mouseleave(function (e) {
-        mousePressed = false;
-    });
+    ctx.fillRect(25,25,100,100);
+    ctx.clearRect(45,45,60,60);
+    ctx.strokeRect(50,50,50,50);
+  }
 }
-
-function Draw(x, y, isDown) {
-    if (isDown) {
-        ctx.beginPath();
-        ctx.strokeStyle = $('#selColor').val();
-        ctx.lineWidth = $('#selWidth').val();
-        ctx.lineJoin = "round";
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(x, y);
-        ctx.closePath();
-        ctx.stroke();
-    }
-    lastX = x; lastY = y;
-}
-
-function clearArea() {
-    // Use the identity matrix while clearing the canvas
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-}
-*/
