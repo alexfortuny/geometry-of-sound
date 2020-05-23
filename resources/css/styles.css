@@ -1,3 +1,17 @@
 h1 {
   font-family: sans-serif;
 }
+#circle {
+  background-color:gray;
+}
+.point {
+  background-color: black;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+#point1 {
+  position: relative;
+  top: 30px;
+  left: 30px;
+}
