@@ -14,7 +14,7 @@ h1 {
   left:10%;
   top:10%;
 }
-.circleCanvas {
+#canvas {
   position:absolute;
   width:600px;
   height:600px;
