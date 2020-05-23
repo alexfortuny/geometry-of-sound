@@ -1,9 +1,12 @@
+body {
+  background-color: rgb(245, 240, 224);
+}
 h1 {
   font-family: sans-serif;
 }
 .circle {
   position:absolute;
-  background-color:rgb(213, 225, 224);
+  background-color: rgb(213, 225, 224);
   width:600px;
   height:600px;
   border-radius: 50%;
@@ -12,13 +15,13 @@ h1 {
 }
 .point {
   position: absolute;
-  background-color: black;
+  background-color: rgb(102, 102, 102);
   width: 10px;
   height: 10px;
   border-radius: 50%;
 }
 .point:hover {
-  background-color: red;
+  background-color: rgb(61, 143, 136);
 }
 .center {
   position:absolute;
