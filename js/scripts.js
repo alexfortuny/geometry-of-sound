@@ -14,9 +14,11 @@ jQuery(document).ready(function($) {
 
 
 
+    const canvas = SVG("svg");
 
-
-    const svg = $("svg");
+    for (let i = 0; i < 12; i++) {
+        canvas.circle(10).addClass("pitch").move(300, 0).rotate(30*i, 300, 300);
+    }
 
     $(".pitch").hover(function() {
         $(this).css({
@@ -27,8 +29,5 @@ jQuery(document).ready(function($) {
             "fill": "green",
         });
     });
-
-    svg.append('<circle class="pitch" cx="300" cy="5" r="5" transform="rotate(30 300 300)" />')
-
 
 });
