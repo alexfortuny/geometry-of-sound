@@ -18,39 +18,11 @@ p {
   margin: 10px 10px 10px 10px;
 }
 
-.circle {
-  position:relative;
-  background-color: rgb(213, 225, 224);
-  width:600px;
-  height:600px;
-  border-radius: 50%;
-  margin: 10px 10px 10px 10px;
-  /*z-index: 1;*/
-  justify-content: center;
-}
-
-canvas {
-  position:absolute;
-  width:600px;
-  height:600px;
-  margin: 0px 10px 10px 10px;
-  z-index: 3;
-}
-
-.point {
-  position: absolute;
-  background-color: rgb(102, 102, 102);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  /*z-index: 2;*/
-  left: 295px;
-  top: 295px;
-}
 
 #wrapper {
   width: 100%;
   text-align: center;
+  margin-top: 60px;
 }
 
 svg {
@@ -64,45 +36,4 @@ svg circle.circle-of-fifths {
 
 svg circle.pitch {
   fill: green;
-}
-
-.point:nth-child(1) {
-  transform: translateY(-300px);
-}
-.point:nth-child(2) {
-  transform: rotate(30deg) translateY(-300px);
-}
-.point:nth-child(3) {
-  transform: rotate(60deg) translateY(-300px);
-}
-.point:nth-child(4) {
-  transform: rotate(90deg) translateY(-300px);
-}
-.point:nth-child(5) {
-  transform: rotate(120deg) translateY(-300px);
-}
-.point:nth-child(6) {
-  transform: rotate(150deg) translateY(-300px);
-}
-.point:nth-child(7) {
-  transform: rotate(180deg) translateY(-300px);
-}
-.point:nth-child(8) {
-  transform: rotate(210deg) translateY(-300px);
-}
-.point:nth-child(9) {
-  transform: rotate(240deg) translateY(-300px);
-}
-.point:nth-child(10) {
-  transform: rotate(270deg) translateY(-300px);
-}
-.point:nth-child(11) {
-  transform: rotate(300deg) translateY(-300px);
-}
-.point:nth-child(12) {
-  transform: rotate(330deg) translateY(-300px);
-}
-
-.point:hover {
-  background-color: rgb(255, 151, 151);
 }

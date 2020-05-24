@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
     const canvas = SVG("svg");
 
     for (let i = 0; i < 12; i++) {
-        canvas.circle(10).addClass("pitch").move(300, 0).rotate(30*i, 300, 300);
+        canvas.circle(10).addClass("pitch").move(300, 0).rotate(30*i, 305, 305);
     }
 
     $(".pitch").hover(function() {
@@ -29,5 +29,8 @@ jQuery(document).ready(function($) {
             "fill": "green",
         });
     });
+
+
+
 
 });
