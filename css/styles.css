@@ -26,12 +26,13 @@ p {
   border-radius: 50%;
   margin: 10px 10px 10px 10px;
   z-index: 1;
+  justify-content: center;
 }
 canvas {
-  position:fixed;
+  position:absolute;
   width:600px;
   height:600px;
-  left:10px;
+  margin: 0px 10px 10px 10px;
   z-index: 3;
 }
 .point {
