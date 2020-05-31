@@ -1,33 +1,37 @@
 let polySynth;
-let pointClick;
+let point = [];
 
 function setup() {
   let cnv = createCanvas(600, 600);
   angleMode(DEGREES);
-  // cnv.mousePressed(playSynth);
   polySynth = new p5.PolySynth();
-  pointClick = new Point(0, 0, 10, 10);
   noLoop();
 }
 
 function draw() {
   background(0, 0, 0, 0);
   circleOfFifths();
-  pointClick.show();
+  translate(-300, -300); // return to initial position, cause translation point was moved before.
 }
 
 function circleOfFifths() {
   let i = 0;
   let x = 0;
-  let y = -250;
+  let y = -240;
   let r = 10;
   let rotationFactor = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
   let noteName = ["C", "G", "D", "A", "E", "B", "F#/Gb", "Db", "Ab", "Eb", "Bb", "F"];
+  let point = [] //how to create variables with different names in a loop?
   translate(300, 300); // translation point to the middle
   for (i = 0; i < 12; i++) {
     push();
     rotate(rotationFactor[i]);
-    point(x, y);
+    // stroke(100);
+    // strokeWeight(10);
+    // ellipse(x, y, r, r);
+    point = new Point(0, -240, 10, 10); //how to create variables with different names in a loop?
+    point.show();
+    // point.push(i++);
     pop();
 
     push();
@@ -48,7 +52,10 @@ class Point {
   }
 
   clicked() {
+    let d = dist(mouseX, mouseY, this.x, this.y);
+    if (d < this.r) {
       console.log("CLICK ON");
+    }
   }
 
   show(x, y, r) {
@@ -59,7 +66,7 @@ class Point {
 }
 
 function mousePressed() {
-  pointClick.clicked();
+  point.clicked();
 }
 
 // CHECK https://youtu.be/TaN5At5RWH8?t=375
