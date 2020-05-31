@@ -1,58 +1,33 @@
 let polySynth;
-let circlePoint;
+let pointClick;
 
 function setup() {
   let cnv = createCanvas(600, 600);
   angleMode(DEGREES);
   // cnv.mousePressed(playSynth);
   polySynth = new p5.PolySynth();
-  circlePoint = new Point(0, 0, 10);
+  pointClick = new Point(0, 0, 10, 10);
   noLoop();
 }
 
 function draw() {
   background(0, 0, 0, 0);
   circleOfFifths();
-}
-
-class Point {
-  constructor(x_, y_, r_) {
-    // Location and size
-    this.x = x_;
-    this.y = y_;
-    this.r = r_;
-  }
-  // Is a point inside the doorbell?
-  contains(mx, my) {
-    return dist(mx, my, this.x, this.y) < this.r;
-  }
-
-  // Show the point
-  display(mx, my) {
-    if (this.contains(mx, my)) {
-      fill(100);
-    } else {
-      fill(200);
-    }
-    stroke(0);
-    strokeWeight(0);
-    ellipseMode(RADIUS);
-    ellipse(this.x, this.y, this.r, this.r);
-  }
+  pointClick.show();
 }
 
 function circleOfFifths() {
   let i = 0;
   let x = 0;
   let y = -250;
+  let r = 10;
   let rotationFactor = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
   let noteName = ["C", "G", "D", "A", "E", "B", "F#/Gb", "Db", "Ab", "Eb", "Bb", "F"];
   translate(300, 300); // translation point to the middle
   for (i = 0; i < 12; i++) {
     push();
     rotate(rotationFactor[i]);
-    strokeWeight(10);
-    point["i"] = point(x, y);
+    point(x, y);
     pop();
 
     push();
@@ -65,12 +40,30 @@ function circleOfFifths() {
   }
 }
 
-function mousePressed() {
-  // If the user clicks on the doorbell, play the sound!
-  if (circlePoint.contains(mouseX, mouseY)) {
-    polySynth.play('G3', 0.1, 0, 1.5);
+class Point {
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
+
+  clicked() {
+      console.log("CLICK ON");
+  }
+
+  show(x, y, r) {
+    stroke(100);
+    strokeWeight(10);
+    ellipse(this.x, this.y, this.r, this.r);
   }
 }
+
+function mousePressed() {
+  pointClick.clicked();
+}
+
+// CHECK https://youtu.be/TaN5At5RWH8?t=375
+
 //
 // function playSynth() {
 //   userStartAudio();
