@@ -1,93 +1,57 @@
-jQuery(document).ready(function($) {
+let polySynth;
 
-  const canvas = SVG("svg");
+function setup() {
+  let cnv = createCanvas(600, 600);
+  angleMode(DEGREES);
+  cnv.mousePressed(playSynth);
+  polySynth = new p5.PolySynth();
+  noLoop();
+}
 
-  // Create the 12 circle-of-fifth points
-    for (let i = 0; i < 12; i++) {
-        canvas.circle(10).addClass("pitch").attr('id', 'position' + i).move(300, 0).rotate(30 * i, 305, 305).click(on_pitch_click);
-    }
+function draw() {
+  background(0, 0, 0, 0);
+  circleOfFifths();
+}
 
+function circleOfFifths() {
+  let i = 0;
+  let x = 0;
+  let y = -250;
+  let rotationFactor = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+  let noteName = ["C", "G", "D", "A", "E", "B", "F#/Gb", "Db", "Ab", "Eb", "Bb", "F"];
+  stroke(39, 92, 81); // Change the color
+  strokeWeight(10); // Make the points 10 pixels in size
+  translate(300, 300); // translation point to the middle
+  for (i = 0; i < 12; i++) {
+    push();
+    rotate(rotationFactor[i]);
+    point(x, y);
+    pop();
 
-    /** Extract the SVG coordinates *relative* to the given SVG element from a mouse event object. */
-    function get_relative_svg_coordinates(svg, evt) {
-        let pt = svg.createSVGPoint();  // TODO Should create this just once per canvas
-        pt.x = evt.clientX;
-        pt.y = evt.clientY;
-
-        // The cursor point, translated into svg coordinates
-        const cursorpt =  pt.matrixTransform(svg.getScreenCTM().inverse());
-        return [cursorpt.x, cursorpt.y]
-    }
-
-
-    let path_coords = [];
-    let lines = [];
-
-
-    function on_pitch_click(e) {
-        const node = this.node;
-        const svg = node.closest("svg");
-
-        // Extract the coordinates of the element relative to the parent svg canvas
-        const elem_coords = node.getBoundingClientRect();
-        const svg_coords = svg.getBoundingClientRect();
-        const elemx = elem_coords.x - svg_coords.x;
-        const elemy = elem_coords.y - svg_coords.y;
-        const elem_centerx = elemx + elem_coords.width/2;
-        const elem_centery = elemy + elem_coords.height/2;
-
-        // const point = get_relative_svg_coordinates(svg, e);
-        const point = [elem_centerx, elem_centery]
-
-        path_coords.push(point);
-        const nelems = path_coords.length;
-        if (nelems > 1) {
-            const x0 = path_coords[nelems-2];
-            const x1 = path_coords[nelems-1];
-            lines.push(canvas.line(x0[0], x0[1], x1[0], x1[1]).attr({
-                "stroke": "#fff",
-                "stroke-width": "2px"
-            }));
-        }
-
-        if (node.getAttribute('clicked')) {
-            // Second time we click on same node - stop animation
-            // console.log("STOP");
-            console.log(lines);
-            // TODO
-            path_coords = [];
-            lines = [];
-            const svglines = SVG(svg).find('line');
-            // console.log(svglines);
-            // svglines.animate(2000, 1000, 'now').attr({ stroke: '#f03' });
-
-            console.log("Let's get wild!");
-            svglines.animate({
-              duration: 1000,
-              delay: 400,
-              when: 'now',
-              swing: true,
-              times: 3,
-              wait: 200
-            }).attr({ stroke: '#ff204e' }).after(function () {
-                this.element().remove();
-            });
-
-        } else {
-            node.setAttribute('clicked', true);
-        }
-
-
-        // console.log(point);
+    push();
+    stroke(0, 0, 0, 0);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    rotate(rotationFactor[i]);
+    text(noteName[i], 0, -270);
+    pop();
   }
+}
 
-  $(".pitch").hover(function() {
-    $(this).css({
-      "fill": "blue",
-    });
-  }, function() {
-    $(this).css({
-      "fill": "green",
-    });
-  });
-});
+function playSynth() {
+  userStartAudio();
+
+  // note duration (in seconds)
+  let dur = 1.5;
+
+  // time from now (in seconds)
+  let time = 0;
+
+  // velocity (volume, from 0 to 1)
+  let vel = 0.1;
+
+  // notes can overlap with each other
+  polySynth.play('G3', vel, 0, dur);
+  polySynth.play('B4', vel, time += 1/3, dur);
+  polySynth.play('Db4', vel, time += 1/3, dur);
+}
