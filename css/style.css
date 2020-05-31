@@ -1,0 +1,39 @@
+body {
+  background-color: rgb(245, 240, 224);
+}
+
+h1 {
+  font-family: sans-serif;
+  color: rgb(80, 80, 80);
+}
+
+p {
+  font-family: sans-serif;
+  color: rgb(80, 80, 80);
+}
+
+.text-box {
+  position: relative;
+  background-color: rgb(222, 222, 222);
+  width: 600px;
+  border-radius: 30px;
+  padding: 10px 10px 10px 10px;
+  margin: 10px 10px 10px 10px;
+}
+
+#wrapper {
+  width: 100%;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+svg {}
+
+svg circle.circle-of-fifths {
+  fill: rgb(213, 225, 224);
+}
+
+svg circle.pitch {
+  fill: green;
+}
