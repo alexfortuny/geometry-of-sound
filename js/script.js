@@ -31,7 +31,7 @@ function circleOfFifths() {
     // ellipse(x, y, r, r);
     point = new Point(0, -240, 10, 10); //how to create variables with different names in a loop?
     point.show();
-    // point.push(i++);
+    // point.push(i++); Use different name. TRY
     pop();
 
     push();
