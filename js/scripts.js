@@ -90,4 +90,18 @@ jQuery(document).ready(function($) {
       "fill": "green",
     });
   });
+
+  let notes = ['C3', 'G3', 'D3', 'A3', 'E3', 'B3', 'F#3', 'Db3', 'Ab3', 'Eb3', 'Bb3', 'F3']
+  for (let i = 0; i < 12; i++) {
+    $("#position" + i).mousedown(function() {
+      synth.triggerAttackRelease([notes[i]], '4n');
+    });
+  };
 });
+
+//a polysynth composed of 6 Voices of Synth
+var synth = new Tone.PolySynth(4, Tone.Synth, {
+  oscillator : {
+		type : "sine"
+	}
+}).toMaster();
