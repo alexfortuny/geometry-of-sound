@@ -27,7 +27,7 @@ $(document).ready(function () {
 });
 
 let polySynth;
-let circlePoint = "";
+let circlePoint = [];
 
 function setup() {
   let cnv = createCanvas(600, 600);
@@ -51,7 +51,7 @@ function draw() {
     rotate(rotationFactor[i]);
     fill(255, 207, 0);
     noStroke(); // Don't draw a stroke around shapes
-    circlePoint = ellipse(x, y, r);
+    circlePoint.push(ellipse(x, y, r));
     pop();
 
     push();
@@ -63,4 +63,8 @@ function draw() {
     pop();
   }
   // translate(-300, -300); // return to initial position, cause translation point was moved before.
+}
+
+function mouseClicked(circlePoint) {
+  console.log("CLICK ON circlePoint");
 }
