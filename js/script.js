@@ -54,8 +54,8 @@ jQuery(document).ready(function($) {
       });
       SVG(svg).find('circle').attr('clicked', null);
       lastcoord = null;
-         synth.triggerAttackRelease(storedChord, '2n');
-
+         synth.triggerAttackRelease(storedChord.slice(0, -1), '2n');
+         storedChord = [];
     } else {
       node.setAttribute('clicked', true);
       synth.triggerAttackRelease(note, '8n');
