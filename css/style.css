@@ -1,0 +1,22 @@
+h1 {
+  font-family: sans-serif;
+  color: rgb(80, 80, 80);
+  text-align: center;
+}
+
+#wrapper {
+  width: 100%;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+svg {}
+
+svg circle.circle-of-fifths {
+  fill: rgb(233, 233, 233);
+}
+
+svg circle.pitch {
+  fill: rgb(78, 78, 78);
+}
