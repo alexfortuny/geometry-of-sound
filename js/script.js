@@ -1,70 +1,86 @@
-$(document).ready(function () {
-  $( "#target1" ).click(function() {
-    console.log("CLICK ON TARGET 1");
-    polySynth.play('C4', 0.1, 0, 1.5);
-    polySynth.play('D4', 0.1, 0, 1.5);
-    polySynth.play('E4', 0.1, 0, 1.5);
-    polySynth.play('G4', 0.1, 0, 1.5);
+jQuery(document).ready(function($) {
+  const notes = ['C4', 'G4', 'D4', 'A4', 'E4', 'B4', 'F#4', 'Db4', 'Ab4', 'Eb4', 'Bb4', 'F4'];
+  const canvas = SVG("svg");
+
+  // Create the 12 circle-of-fifth points
+  for (let i = 0; i < 12; i++) {
+    canvas.circle(10).addClass("pitch").attr('id', 'position' + i).attr('note', notes[i]).move(300, 0).rotate(30 * i, 305, 305).click(on_pitch_click);
+  }
+
+
+  let lastcoord = null;
+  let storedChord = [];
+
+  function on_pitch_click(e) {
+    const node = this.node;
+    const note = node.getAttribute('note');
+    const svg = node.closest("svg");
+
+    // Extract the coordinates of the element relative to the parent svg canvas
+    const elem_coords = node.getBoundingClientRect();
+    const svg_coords = svg.getBoundingClientRect();
+    const elemx = elem_coords.x - svg_coords.x;
+    const elemy = elem_coords.y - svg_coords.y;
+    const elem_centerx = elemx + elem_coords.width / 2;
+    const elem_centery = elemy + elem_coords.height / 2;
+
+    // const point = get_relative_svg_coordinates(svg, e);
+    const point = [elem_centerx, elem_centery]
+
+    if (lastcoord != null) {
+      canvas.line(lastcoord[0], lastcoord[1], point[0], point[1]).attr({
+        "stroke": "rgb(78, 78, 78)",
+        "stroke-width": "2px"
+      });
+    }
+
+    storedChord.push(note);
+
+    lastcoord = point;
+
+    if (node.getAttribute('clicked')) {
+      const svglines = SVG(svg).find('line');
+      svglines.animate({
+        duration: 1000,
+        delay: 400,
+        when: 'now',
+        swing: true,
+        times: 3,
+        wait: 200
+      }).attr({
+        stroke: 'rgb(201, 187, 87)'
+      }).after(function() {
+        this.element().remove();
+      });
+      SVG(svg).find('circle').attr('clicked', null);
+      lastcoord = null;
+         synth.triggerAttackRelease(storedChord.slice(0, -1), '2n');
+         storedChord = [];
+    } else {
+      node.setAttribute('clicked', true);
+      synth.triggerAttackRelease(note, '8n');
+    }
+
+
+    // console.log(point);
+  }
+
+  $(".pitch").hover(function() {
+    $(this).css({
+      "fill": "rgb(201, 187, 87)",
+    });
+  }, function() {
+    $(this).css({
+      "fill": "rgb(78, 78, 78)",
+    });
   });
-  $( "#target2" ).mousedown(function() {
-    console.log("CLICK ON TARGET 2");
-    polySynth.play('D4', 0.1, 0, 1.5);
-    polySynth.play('E4', 0.1, 0, 1.5);
-    polySynth.play('F#4', 0.1, 0, 1.5);
-    polySynth.play('A4', 0.1, 0, 1.5);
-  });
-  $( "#target3" ).mousedown(function() {
-    console.log("CLICK ON TARGET 3");
-    polySynth.play('E4', 0.1, 0, 1.5);
-    polySynth.play('F#4', 0.1, 0, 1.5);
-    polySynth.play('G4', 0.1, 0, 1.5);
-    polySynth.play('B4', 0.1, 0, 1.5);
-  });
-  $(circlePoint).mousedown(function() { //CONNECT THIS WITH THE POINTS CREATED
-    console.log("CLICK ON circlePoint");
-    polySynth.play('D4', 0.1, 0, 1.5);
-  });
+
+
 });
 
-let polySynth;
-let circlePoint = [];
-
-function setup() {
-  let cnv = createCanvas(600, 600);
-  angleMode(DEGREES);
-  polySynth = new p5.PolySynth();
-  noLoop();
-}
-
-let i = 0;
-let x = 0;
-let y = -240;
-let r = 20;
-let rotationFactor = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
-let noteName = ["C", "G", "D", "A", "E", "B", "F#/Gb", "Db", "Ab", "Eb", "Bb", "F"];
-
-function draw() {
-  background(145, 179, 163);
-  translate(300, 300);
-  for (i = 0; i < 12; i++) {
-    push();
-    rotate(rotationFactor[i]);
-    fill(255, 207, 0);
-    noStroke(); // Don't draw a stroke around shapes
-    circlePoint.push(ellipse(x, y, r));
-    pop();
-
-    push();
-    stroke(0, 0, 0, 0);
-    textAlign(CENTER, CENTER);
-    textSize(20);
-    rotate(rotationFactor[i]);
-    text(noteName[i], 0, -270);
-    pop();
+//a polysynth composed of 6 Voices of Synth
+const synth = new Tone.PolySynth(4, Tone.Synth, {
+  oscillator: {
+    type: "sine"
   }
-  // translate(-300, -300); // return to initial position, cause translation point was moved before.
-}
-
-function mouseClicked(circlePoint) {
-  console.log("CLICK ON circlePoint");
-}
+}).toMaster();
