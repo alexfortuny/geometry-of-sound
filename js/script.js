@@ -62,6 +62,11 @@ jQuery(document).ready(function($) {
     }
 
 
+
+
+    render_stave(storedChord);
+
+
     // console.log(point);
   }
 
@@ -75,49 +80,49 @@ jQuery(document).ready(function($) {
     });
   });
 
+  //a polysynth composed of 6 Voices of Synth
+  const synth = new Tone.PolySynth(4, Tone.Synth, {
+    oscillator: {
+      type: "sine"
+    }
+  }).toMaster();
+
+
+
+  const VF = Vex.Flow;
+
+  const vf = new VF.Factory({
+    renderer: {elementId: 'staff', width: 200, height: 200}
+  });
+
+  const score = vf.EasyScore();
+  const system = vf.System();
+
+  system.addStave({
+    voices: [
+      score.voice(score.notes('C#4/w', {stem: 'down'})),
+    ]
+  }).addClef('treble').addTimeSignature('4/4');
+
+  vf.draw();
+
+
+  function render_stave(chord) {
+
+    system.addStave({
+      voices: [
+        score.voice(score.notes('C#4/w', {stem: 'down'})),
+        score.voice(score.notes('E4/w', {stem: 'down'})),
+        score.voice(score.notes('G4/w', {stem: 'down'})),
+        score.voice(score.notes('B4/w', {stem: 'down'})),
+      ]
+    });
+
+
+  }
+
+
+
+
 
 });
-
-//a polysynth composed of 6 Voices of Synth
-const synth = new Tone.PolySynth(4, Tone.Synth, {
-  oscillator: {
-    type: "sine"
-  }
-}).toMaster();
-
-const VF = Vex.Flow;
-
-// We created an object to store the information about the workspace
-var WorkspaceInformation = {
-    // The div in which you're going to work
-    div: document.getElementById("staff"),
-    // Vex creates a svg with specific dimensions
-    canvasWidth: 500,
-    canvasHeight: 500
-};
-
-// Create a renderer with SVG
-var renderer = new VF.Renderer(
-    WorkspaceInformation.div,
-    VF.Renderer.Backends.SVG
-);
-
-// Use the renderer to give the dimensions to the SVG
-renderer.resize(WorkspaceInformation.canvasWidth, WorkspaceInformation.canvasHeight);
-
-// Expose the context of the renderer
-var context = renderer.getContext();
-
-// And give some style to our SVG
-context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
-
-
-/**
- * Creating a new stave
- */
-// Create a stave of width 400 at position x10, y40 on the SVG.
-var stave = new VF.Stave(10, 40, 400);
-// Add a clef and time signature.
-stave.addClef("treble").addTimeSignature("4/4");
-// Set the context of the stave our previous exposed context and execute the method draw !
-stave.setContext(context).draw();
