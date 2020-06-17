@@ -116,6 +116,7 @@ jQuery(document).ready(function($) {
 			"release" : 1,
 			"baseUrl" : "audio/"
 	}).toMaster();
+  piano.volume.value = -6;
 
   //StaffConfig
   const VF = Vex.Flow;
