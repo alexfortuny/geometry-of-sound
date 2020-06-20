@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
     storedChord.push(note);
 
     lastcoord = point;
-
+    //Create the line / figure
     if (node.getAttribute('clicked')) {
       const svglines = SVG(svg).find('line');
       svglines.animate({
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
 
     // console.log(point);
   }
-
+  //Change color when hover
   $(".pitch").hover(function() {
     $(this).css({
       "fill": "rgb(201, 187, 87)",
