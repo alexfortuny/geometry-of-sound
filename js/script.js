@@ -34,11 +34,10 @@ jQuery(document).ready(function($) {
             });
         }
 
-        storedChord.push(note);
-
         lastcoord = point;
         // Create the line / figure
         if (node.getAttribute('clicked')) {
+            // The user clicked on a node which has already been clicked: we trigger the animation and chord playing
             const svglines = SVG(svg).find('line');
             svglines.animate({
                 duration: 1000,
@@ -51,24 +50,20 @@ jQuery(document).ready(function($) {
                 stroke: 'rgb(201, 187, 87)'
             }).after(function() {
                 this.element().remove();
+                render_empty_stave();
             });
             SVG(svg).find('circle').attr('clicked', null);
             lastcoord = null;
             piano.triggerAttackRelease(storedChord.slice(0, -1), '2n');
+            render_stave(storedChord);
             storedChord = [];
         } else {
+            // The user clicked on a previously-unclicked node - we just label it and play the corresponding single note
             node.setAttribute('clicked', true);
             piano.triggerAttackRelease(note, '8n');
+            storedChord.push(note);
+            render_stave(storedChord);
         }
-
-
-
-        console.log("Rendering:")
-        console.log(storedChord)
-        render_stave(storedChord);
-
-
-        // console.log(point);
     }
     //Change color when hover
     $(".pitch").hover(function() {
@@ -121,34 +116,48 @@ jQuery(document).ready(function($) {
 
     //StaffConfig
     const VF = Vex.Flow;
-
-    const vf = new VF.Factory({
-        renderer: {elementId: 'staff', width: 200, height: 200}
-    });
-
-    const score = vf.EasyScore();
-    const system = vf.System();
-
-    system.addStave({
-        voices: [
-            score.voice(score.notes('C#4/w', {stem: 'down'})),
-        ]
-    }).addClef('treble').addTimeSignature('4/4');
-
-    vf.draw();
-
+    const staff = $("#staff");
 
     function render_stave(chord) {
+        console.log("Rendering:", chord);
+        staff.children('svg').remove();
 
-        system.addStave({
-            voices: [
-                score.voice(score.notes('C#4/w', {stem: 'down'})),
-                score.voice(score.notes('E4/w', {stem: 'down'})),
-                score.voice(score.notes('G4/w', {stem: 'down'})),
-                score.voice(score.notes('B4/w', {stem: 'down'})),
-            ]
+        const vf = new VF.Factory({
+            renderer: {elementId: 'staff', width: 200, height: 200}
         });
 
+        const score = vf.EasyScore();
+        const system = vf.System();
 
+        const voices = chord.map(note => score.voice(score.notes(note + '/w', {stem: 'down'})));
+        console.log("Voices:", voices);
+
+
+        if (voices.length) {
+            system.addStave({voices: voices}).addClef('treble').addTimeSignature('4/4');
+        } else {
+            system.addStave({}).addClef('treble').addTimeSignature('4/4');
+        }
+
+        vf.draw();
     }
+
+    // TODO Better use the advanced API below for both staff with notes and without them
+    function render_empty_stave() {
+        staff.children('svg').remove();
+        const renderer = new VF.Renderer(staff[0], VF.Renderer.Backends.SVG);
+        renderer.resize(200, 200);
+
+        const context = renderer.getContext();
+
+        // Create a stave of width 400 at position 10, 40 on the canvas.
+        const stave = new VF.Stave(10, 40, 400);
+
+        // Add a clef and time signature.
+        stave.addClef("treble").addTimeSignature("4/4").setContext(context).draw();
+    }
+
+
+
+    render_empty_stave();
 });
