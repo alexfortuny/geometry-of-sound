@@ -18,5 +18,14 @@ svg circle.circle-of-fifths {
 }
 
 svg circle.pitch {
-  fill: rgb(78, 78, 78);
+  fill: rgb(100, 100, 100);
+}
+
+svg circle.pitch:hover {
+  fill: rgb(201, 187, 87);
+}
+
+svg.main-circle {
+  fill: #dc5f5f;
+  font-family: Courier, sans-serif;
 }
