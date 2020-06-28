@@ -126,50 +126,57 @@ jQuery(document).ready(function($) {
         // }).toMaster();
         // piano.volume.value = -20;
 
-    //StaffConfig
     const VF = Vex.Flow;
-    const staff = $("#staff");
+    const stave_div = $("#stave");
 
     function render_stave(chord) {
-        console.log("Rendering:", chord);
-        staff.children('svg').remove();
-
-        const vf = new VF.Factory({
-            renderer: {elementId: 'staff', width: 200, height: 200}
-        });
-
-        const score = vf.EasyScore();
-        const system = vf.System();
-
-        const voices = chord.map(note => score.voice(score.notes(note + '/w', {stem: 'down'})));
-        console.log("Voices:", voices);
+        // https://github.com/0xfe/vexflow/wiki/The-VexFlow-Tutorial
+        // We'll remove the previous stave and redraw it with the new set of voices
+        stave_div.empty();
 
 
-        if (voices.length) {
-            system.addStave({voices: voices}).addClef('treble').addTimeSignature('4/4');
-        } else {
-            system.addStave({}).addClef('treble').addTimeSignature('4/4');
-        }
+        // First draw an empty stave
+        const renderer = new VF.Renderer(stave_div[0], VF.Renderer.Backends.SVG);
 
-        vf.draw();
-    }
-
-    // TODO Better use the advanced API below for both staff with notes and without themwork    sl
-    function render_empty_stave() {
-        staff.children('svg').remove();
-        const renderer = new VF.Renderer(staff[0], VF.Renderer.Backends.SVG);
+        // Configure the rendering context.
         renderer.resize(200, 200);
-
         const context = renderer.getContext();
 
-        // Create a stave of width 400 at position 10, 40 on the canvas.
-        const stave = new VF.Stave(10, 40, 400);
+        // Create a stave at position 10, 40 of width 400 on the canvas and add a clef and time signature.
+        const stave = new VF.Stave(10, 40, 400).addClef("treble").addTimeSignature("4/4");
 
-        // Add a clef and time signature.
-        stave.addClef("treble").addTimeSignature("4/4").setContext(context).draw();
+        // Connect it to the rendering context and draw!
+        stave.setContext(context).draw();
+
+        // If the chord is empty, we just want to draw the empty stave, so we're done
+        if (!chord.length) return;
+
+
+        const chord_keys = chord.map(transform_note_to_vexflow);
+        const accidentals = chord.map(compute_accidental);
+        // console.log(chord, chord_keys, accidentals);
+
+
+        const note = new VF.StaveNote({clef: "treble", keys: chord_keys, duration: "w" });
+        accidentals.forEach(function(accident, i) {
+            if (accident) note.addAccidental(i, new VF.Accidental(accident));
+        });
+
+        VF.Formatter.FormatAndDraw(context, stave, [note]);
     }
 
+    function transform_note_to_vexflow(note) {
+        // Receive a string such as "F#4" and maps it into format f#/4
+        const note_name = note.slice(0, note.length-1).toLowerCase();
+        return note_name + "/" + note[note.length-1];
+    }
 
+    function compute_accidental(note) {
+        // If the note string has three elements (e.g. "F#4"), the one in the middle is necessarily the accidental;
+        // otherwise there's no accidental
+        if (note.length === 3) return note[1];
+        return "";
+    }
 
-    render_empty_stave();
+    render_stave([]);
 });
