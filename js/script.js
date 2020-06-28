@@ -59,31 +59,31 @@ jQuery(document).ready(function($) {
         // Create the line / figure
         if (node.getAttribute('clicked')) {
             // The user clicked on a node which has already been clicked: we trigger the animation and chord playing
-            const svglines = SVG(group).find('line');
+            const svglines = SVG(svg).find('line');
             svglines.animate({
                 duration: 1000,
                 delay: 400,
                 when: 'now',
                 swing: true,
-                times: 3,
+                times: 1,
                 wait: 200
             }).attr({
                 stroke: 'rgb(201, 187, 87)'
             }).after(function() {
                 this.element().remove();
-                render_empty_stave();
+                render_stave([]);
             });
             SVG(group).find('circle').attr('clicked', null);
             lastcoord = null;
-            piano.triggerAttackRelease(storedChord.slice(0, -1), '2n');
             render_stave(storedChord);
+            piano.triggerAttackRelease(storedChord.slice(0, -1), '2n');
             storedChord = [];
         } else {
             // The user clicked on a previously-unclicked node - we just label it and play the corresponding single note
             node.setAttribute('clicked', true);
-            piano.triggerAttackRelease(note, '8n');
             storedChord.push(note);
             render_stave(storedChord);
+            piano.triggerAttackRelease(note, '8n');
         }
     }
 
